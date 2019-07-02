@@ -1,0 +1,31 @@
+body {
+    font-family: monospace, "Open Sans", sans-serif;
+    display: flex;
+}
+
+#messages {
+    margin-top: 12px;
+    margin-bottom: 12px;
+    padding: 12px;
+    width:85%;
+    display: inline-block;
+    border:1px solid black;
+    max-height: 250px;
+    min-height: 250px;
+    overflow: scroll;
+}
+
+#messages span {
+    overflow-y: scroll;
+    overflow: scroll;
+}
+
+#map {
+    height: -webkit-fill-available;  /* The height is 400 pixels */
+    width: 100%;  /* The width is the width of the web page */
+}
+
+#dados {
+    height: auto;  /* The height is 400 pixels */
+    width: 30%;  /* The width is the width of the web page */
+}
