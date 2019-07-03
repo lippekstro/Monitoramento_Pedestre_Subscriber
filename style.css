@@ -8,16 +8,12 @@ body {
     margin-bottom: 12px;
     padding: 12px;
     width:85%;
-    display: inline-block;
+    display: flex;
     border:1px solid black;
     max-height: 250px;
     min-height: 250px;
     overflow: scroll;
-}
-
-#messages span {
-    overflow-y: scroll;
-    overflow: scroll;
+    flex-direction: column-reverse;
 }
 
 #map {

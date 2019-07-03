@@ -17,6 +17,7 @@ var inicio_correndo = 0;
 var path_parado = [];
 var path_andando = [];
 var path_correndo = [];
+var tempo = [];
 
 client = new Paho.MQTT.Client(host, port, "web_" + parseInt(Math.random() * 100, 10));
 
@@ -61,10 +62,12 @@ function onConnectionLost(responseObject) {
 
 	}
 }
+var tempo_fim = 0;
 
 function onMessageArrived(message) {
 
 	var obj = JSON.parse(message.payloadString.replace(/\bNaN\b/g, "null"));
+	
 
 	pintura.push({ lat: obj.sourceLocationLatitude, lng: obj.sourceLocationLongitude });
 
@@ -73,14 +76,21 @@ function onMessageArrived(message) {
 		document.getElementById("velocidade").innerHTML = "<h3 id='velocidade' style='color:green'> " + valor + " m/s </h3>";
 
 		if (valor <= 0.45) {
+			tempo.push(Math.round(new Date().getTime()/1000));
 			document.getElementById("boneco").src = "img/parado.png";
-			document.getElementById("messages").innerHTML += "<div style='color:green'> " + "PARADO" + "</div>";
+			document.getElementById("messages").innerHTML += "<div style='color:green'> " + "PARADO " + tempo_fim + "s" + "</div>";
 		}
 		else if (valor > 1.8) {
+			tempo.push(Math.round(new Date().getTime()/1000));
+			tempo_fim = tempo[tempo.length-1] - tempo[0];
+			tempo = [];
 			document.getElementById("boneco").src = 'img/correndo.png';
 			document.getElementById("messages").innerHTML += "<div style='color:red'> " + "CORRENDO" + "</div>";
 		}
 		else {
+			tempo.push(Math.round(new Date().getTime()/1000));
+			tempo_fim = tempo[tempo.length-1] - tempo[0];
+			tempo = [];
 			document.getElementById("boneco").src = 'img/andando.png';
 			document.getElementById("messages").innerHTML += "<div style='color:yellow'> " + "ANDANDO" + "</div>";
 		}
@@ -128,6 +138,9 @@ function onMessageArrived(message) {
 			}
 		}
 	}
+	tempo.push(Math.round(new Date().getTime()/1000));
+	tempo_fim = tempo[tempo.length-1] - tempo[0];
+	updateScroll();
 }
 
 function initMap() {
@@ -177,4 +190,9 @@ function atualiza() {
 
 	path_andando = [];
 	path_correndo = [];
+}
+
+function updateScroll(){
+    var element = document.getElementById("messages");
+    element.scrollTop = -(element.scrollHeight);
 }
